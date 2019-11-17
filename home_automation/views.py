@@ -5,6 +5,9 @@ from home_automation.models import home_automation
 # Create your views here.
 
 def initial(request):
+    """
+    Create initial rooms into home_automation(database)
+    """
     try:
         record1 = home_automation(roomtype="bedroom", light_status=None, temperature_degree=None, thermostat_status=None)
         record1.save()
@@ -20,7 +23,9 @@ def initial(request):
     return JsonResponse(result, safe=False)
 
 def addroom(request):
-
+    """
+    Create your own room, assign new unique id to the room
+    """
     newroomtype = request.GET.get('roomtype')
     if request.GET.get('roomtype') != None:
         record = home_automation(roomtype=newroomtype, light_status=request.GET.get('lightstatus'),
@@ -35,6 +40,9 @@ def addroom(request):
     return JsonResponse(result, safe=False)
 
 def cleardb(request):
+    """
+    Delete all data in the home_automation table
+    """
     try:
         home_automation.objects.all().delete()
     except:
@@ -46,11 +54,15 @@ def cleardb(request):
 
 
 def light(request):
+    """
+    Change the light status for the room with id
+    """
     roomid = request.GET.get('id')
     lightstatus = int(request.GET.get('value'))
     if roomid == None or lightstatus == None or (lightstatus != 1 and lightstatus != 0):
         return JsonResponse({'message': 'Error: input is not valid'})
     else:
+        # get the row whose id is the user input room id
         record = home_automation.objects.raw('SELECT * FROM home_automation WHERE id=%s',[roomid])
         if not record:
             return JsonResponse({'message': 'Error: can not find the roomid in the database'})
@@ -68,7 +80,11 @@ def light(request):
 
 
 def temperature(request):
+    """
+    Change the temperature degree for the room with id
+    """
     roomid = request.GET.get('id')
+    # the value must be a float
     try:
         temperature  = float(request.GET.get('value'))
     except:
@@ -76,6 +92,7 @@ def temperature(request):
     if roomid == None or temperature  == None:
         return JsonResponse({'message': 'Error: input is not valid'})
     else:
+        # get the row whose id is the user input room id
         record = home_automation.objects.raw('SELECT * FROM home_automation WHERE id=%s',[roomid])
         if not record:
             return JsonResponse({'message': 'Error: can not find the roomid in the database'})
@@ -92,6 +109,9 @@ def temperature(request):
     return JsonResponse(result, safe=False)
 
 def thermostat(request):
+    """
+    Change the thermostat status for the room with id
+    """
     roomid = request.GET.get('id')
     thermostat = request.GET.get('value')
     if roomid == None or thermostat == None or (thermostat != 'off' and thermostat != 'cool' and thermostat != 'heat' and thermostat != 'fan-on' and thermostat != 'auto'):
@@ -113,12 +133,18 @@ def thermostat(request):
     return JsonResponse(result, safe=False)
 
 def list(request):
+    """
+    Show all data in the home_automation table
+    """
     result = []
     for record in home_automation.objects.values():
         result.append(record)
     return JsonResponse(result, safe=False)
 
 def getdata():
+    """
+    Send all data in the home_automation table to other methods
+    """
     result = []
     for record in home_automation.objects.values():
         result.append(record)
