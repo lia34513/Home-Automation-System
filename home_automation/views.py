@@ -14,7 +14,10 @@ def initial(request):
         record3.save()
     except:
         return JsonResponse({'message': 'Error: can not initial the data to database'})
-    return JsonResponse({'message': 'Success: initial the database'})
+
+    result = [{'message': 'Success: initial the database'}]
+    result.append(getdata())
+    return JsonResponse(result, safe=False)
 
 def addroom(request):
 
@@ -27,14 +30,19 @@ def addroom(request):
     else:
         return JsonResponse({'message': 'Error: you need to provide room type'})
 
-    return JsonResponse({'message': 'Success: add the room info to the home_automation table'})
+    result = [{'message': 'Success: add the room info to the home_automation table'}]
+    result.append(getdata())
+    return JsonResponse(result, safe=False)
 
 def cleardb(request):
     try:
         home_automation.objects.all().delete()
     except:
         return JsonResponse({'message': 'Error: can not clear all row for home_automation table'})
-    return JsonResponse({'message': 'Success: rest the home_automation table'})
+
+    result = [{'message': 'Success: rest the home_automation table'}]
+    result.append(getdata())
+    return JsonResponse(result, safe=False)
 
 
 def light(request):
@@ -54,12 +62,17 @@ def light(request):
             else:
                 return JsonResponse({'message': 'Waring: the new light status is same as before, so no change'})
 
-    return JsonResponse({'message': 'Success: change the light status for the room (roomid is %s)'%roomid})
+    result = [{'message': 'Success: change the light status for the room (roomid is %s)'%roomid}]
+    result.append(getdata())
+    return JsonResponse(result, safe=False)
 
 
 def temperature(request):
     roomid = request.GET.get('id')
-    temperature  = float(request.GET.get('value'))
+    try:
+        temperature  = float(request.GET.get('value'))
+    except:
+        return JsonResponse({'message': 'Error: input is not valid'})
     if roomid == None or temperature  == None:
         return JsonResponse({'message': 'Error: input is not valid'})
     else:
@@ -74,7 +87,9 @@ def temperature(request):
             else:
                 return JsonResponse({'message': 'Waring: the new temperature degree is same as before, so no change'})
 
-    return JsonResponse({'message': 'Success: change the temperature degree for the room (roomid is %s)'%roomid})
+    result = [{'message': 'Success: change the temperature degree for the room (roomid is %s)'%roomid}]
+    result.append(getdata())
+    return JsonResponse(result, safe=False)
 
 def thermostat(request):
     roomid = request.GET.get('id')
@@ -93,8 +108,9 @@ def thermostat(request):
             else:
                 return JsonResponse({'message': 'Waring: the new thermostat status is same as before, so no change'})
 
-    return JsonResponse({'message': 'Success: change the thermostat status for the room (roomid is %s)'%roomid})
-
+    result = [{'message': 'Success: change the thermostat status for the room (roomid is %s)'%roomid}]
+    result.append(getdata())
+    return JsonResponse(result, safe=False)
 
 def list(request):
     result = []
@@ -102,4 +118,9 @@ def list(request):
         result.append(record)
     return JsonResponse(result, safe=False)
 
+def getdata():
+    result = []
+    for record in home_automation.objects.values():
+        result.append(record)
+    return result
 
