@@ -29,12 +29,13 @@ def addroom(request):
     Create your own room, assign new unique id to the room
     """
     if request.method == 'POST':
-        status = ["off", "cool", "heat", "fan-on", "auto"]
-        newroomtype = request.headers['Roomtype']
-        newlightstatus = None
-        newtemperature = None
-        newthermostatstatus = None
+
         try:
+            status = ["off", "cool", "heat", "fan-on", "auto"]
+            newroomtype = request.headers['Roomtype']
+            newlightstatus = None
+            newtemperature = None
+            newthermostatstatus = None
             if 'Lightstatus' in request.headers and (request.headers['Lightstatus'] == '1' or request.headers['Lightstatus'] == '0'):
                 newlightstatus = request.headers['Lightstatus']
             if 'Temperature' in request.headers:
