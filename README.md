@@ -8,7 +8,7 @@ It is built using Django (Python-based API framework as the back-end), SQLite3 (
 - Install Python3 and Django
 - Setup the SQLite3: `python3 manage.py makemigrations`, `python3 manage.py migrate'
 - Run the Server: `python3 manage.py runserver`
-- Send request by POSTMAN: `https://www.getpostman.com/`
+- Input `http://127.0.0.1:8000/`+API in the Browser or Use Postman with `GET` commend becuase address contains all input
 
 # Database
 
