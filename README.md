@@ -5,6 +5,7 @@ It is built using Django (Python-based API framework as the back-end), SQLite3 (
 
 # Local Installation
 
+- Install Python3 and Django
 - Setup the SQLite3: `python3 manage.py makemigrations`, `python3 manage.py migrate'
 - Run the Server: `python3 manage.py runserver`
 - Send request by POSTMAN: `https://www.getpostman.com/`
@@ -20,7 +21,7 @@ It is built using Django (Python-based API framework as the back-end), SQLite3 (
         - thermostat_status: String, Values: `off`, `cool`, `heat`, `fan-on`, `auto`
 # API End Points
 
-- `admin/initial`
+- POST `http://127.0.0.1:8000/admin/initial`
     - Create initial rooms into home_automation(database)
     - Add three rooms with their roomtypes(`bedroom`, `livingroom`, `bathroom`) and unique id
     - Set light_status, temperature_degree, thermostat_status to Null
@@ -28,52 +29,65 @@ It is built using Django (Python-based API framework as the back-end), SQLite3 (
         - Wrong Message or Success Message with list of database
         
     
-- `admin/addroom?roomtype=X&lightstatus=Y&temperature=Z&thermostatstatus=M`
-
+- POST `http://127.0.0.1:8000/admin/addroom`
     - Create your own room, assign new unique id to the room
-    - Provide value for `roomtype`
-    - `lightstatus`,`temperature`,`thermostatstatus` optional to set a value
-    - URL examples: 
-        - `admin/addroom?roomtype=kitchen`
-        - `admin/addroom?roomtype=garage&lightstatus=1&temperature=20&thermostatstatus=off`
-        - `admin/addroom?roomtype=bedroom&lightstatus=0`
+    - Provide value for `Roomtype`
+    - `Lightstatus`,`Temperature`,`Thermostatstatus` optional to set a value
+    - Input: Set `Header` in the POSTMAN
+        - key: Roomtype, value: `String`
+        - key: Lightstatus, value: `1`, `0` or Null
+        - key: Temperature, value: `Float number` or Null
+        - key: Thermostatstatus, value:  `off`, `cool`, `heat`, `fan-on`, `auto` or Null
+        - Input examples: 
+            - `Roomtype=kitchen`
+            - `Roomtype=garage, Lightstatus=1, Temperature=20, Thermostatstatus=off`
+            - `Roomtype=bedroom, Lightstatus=0`
     - Output: json file
         - Wrong Message or Success Message with list of database
         
-- `admin/clear`
+- DELETE `http://127.0.0.1:8000/admin/clear`
     - Delete all data in the home_automation table
     - Output: json file
         - Success Message with list of database
         
-- `admin/list`
+- GET `http://127.0.0.1:8000/admin/list`
     - Show all data in the home_automation table
     - Output: json file
         - list of database
     
-- `admin/light?id=X&value=Y`
+- PUT `http://127.0.0.1:8000/admin/light`
     - Change the light status for the room with id
-    - `id` must exist in the home_automation table
-    - `value` must be `0` or `1`
-    - URL examples:
-        - `admin/light?id=1&value=0`
+    - `Id` must exist in the home_automation table
+    - `Value` must be `0` or `1`
+    - Input: Set `Header` in the POSTMAN
+        - key: Id, value: `Integer`
+        - key: Value, value: `1` or `0`
+        - Input examples: 
+            - `Id=1, Value=0`
     - Output: json file
         - Wrong Message or Success Message with list of database
 
-- `admin/temperature?id=X&value=Y`
+- PUT `http://127.0.0.1:8000/admin/temperature`
     - Change the temperature degree for the room with id
-    - `id` must exist in the home_automation table
-    - `value` must be a number
-    - URL examples:
-        - `admin/temperature?id=1&value=20`
+    - `Id` must exist in the home_automation table
+    - `Value` must be a number
+    - Input: Set `Header` in the POSTMAN
+        - key: Id, value: `Integer`
+        - key: Value, value: `Float`
+        - Input examples: 
+            - `Id=1, Value=20`
     - Output: json file
         - Wrong Message or Success Message with list of database
 
-- `admin/thermostat?id=X&value=Y`
+- PUT `http://127.0.0.1:8000/admin/thermostat`
     - Change the thermostat status for the room with id
-    - `id` must exist in the home_automation table
-    - `value` must be `off`, `cool`, `heat`, `fan-on` or `auto`
-    - URL examples:
-        - `admin/thermostat?id=1&value=heat`
+    - `Id` must exist in the home_automation table
+    - `Value` must be `off`, `cool`, `heat`, `fan-on` or `auto`
+    - Input: Set `Header` in the POSTMAN
+        - key: Id, value: `Integer`
+        - key: Value, value: `off`, `cool`, `heat`, `fan-on`, `auto`
+        - Input examples: 
+            - `Id=1, Value=off`
     - Output: json file
         - Wrong Message or Success Message with list of database
         
