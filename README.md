@@ -6,7 +6,7 @@ It is built using Django (Python-based API framework as the back-end), SQLite3 (
 # Local Installation
 
 - Install Python3 and Django
-- Setup the SQLite3: `python3 manage.py makemigrations`, `python3 manage.py migrate'
+- Setup the SQLite3: `python3 manage.py makemigrations`, `python3 manage.py migrate`
 - Run the Server: `python3 manage.py runserver`
 - Use Postman to call API: https://www.getpostman.com
 
